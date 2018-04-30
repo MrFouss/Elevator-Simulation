@@ -1,15 +1,17 @@
 #include <QDebug>
 #include <cmath>
 
-#include "elevator.h"
-#include "simulationmanager.h"
+#include "data/elevator/ielevator.h"
+#include "singleton/simulationmanager.h"
 #include "events/arrivalatfloorevent.h"
 
-Elevator::Elevator(ElevatorList* elevatorList, Configuration config) : id(idCount++), elevatorList(elevatorList) {
-    switch (config.getIdleScheduling())
+Elevator::Elevator(ElevatorList* elevatorList) : id(idCount++), elevatorList(elevatorList) {
+    Configuration* config = Configuration::getInstance();
+
+    switch (config->getIdleScheduling())
     {
     case IdleScheduling::TOP:
-        currentFloor = config.getAmountFloors() - 1;
+        currentFloor = config->getAmountFloors() - 1;
         break;
     case IdleScheduling::BOTTOM:
         currentFloor = 0;
@@ -107,7 +109,7 @@ void Elevator::embark()
 {
     std::list<ElevatorRequest*> requestList;
 
-    switch (SimulationManager::getInstance()->getConfig().getBusyScheduling())
+    switch (Configuration::getInstance()->getBusyScheduling())
     {
     case BusyScheduling::SHORTEST_SEEK_TIME_FIRST:
         requestList = elevatorList->getRequestListAtFloor(currentFloor);
@@ -135,12 +137,13 @@ void Elevator::embark()
 
 int Elevator::chooseFloor()
 {
-    SimulationManager* simulationManager = SimulationManager::getInstance();
+    Configuration* config = Configuration::getInstance();
+
     if (passengerList.empty())
     {
         if (elevatorList->isRequestAvailable())
         {
-            switch (simulationManager->getConfig().getBusyScheduling())
+            switch (config->getBusyScheduling())
             {
             case BusyScheduling::SHORTEST_SEEK_TIME_FIRST:
                 return elevatorList->getNearestFloorWithRequest(currentFloor);
@@ -173,10 +176,10 @@ int Elevator::chooseFloor()
         }
         else
         {
-            switch (simulationManager->getConfig().getIdleScheduling())
+            switch (config->getIdleScheduling())
             {
             case IdleScheduling::TOP:
-                return simulationManager->getConfig().getAmountFloors() - 1;
+                return config->getAmountFloors() - 1;
 
             case IdleScheduling::BOTTOM:
                 return 0;
@@ -189,7 +192,7 @@ int Elevator::chooseFloor()
     }
     else
     {
-        switch (simulationManager->getConfig().getBusyScheduling())
+        switch (config->getBusyScheduling())
         {
         case BusyScheduling::SHORTEST_SEEK_TIME_FIRST:
             return getNearestPassengerFloor();

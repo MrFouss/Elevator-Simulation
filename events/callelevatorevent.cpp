@@ -1,8 +1,8 @@
 #include <QDebug>
 
-#include "callelevatorevent.h"
-#include "arrivalatfloorevent.h"
-#include "simulationmanager.h"
+#include "events/callelevatorevent.h"
+#include "events/arrivalatfloorevent.h"
+#include "singleton/simulationmanager.h"
 
 void CallElevatorEvent::resolve()
 {

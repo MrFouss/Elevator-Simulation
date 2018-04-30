@@ -2,16 +2,17 @@
 #include <chrono>
 #include <QDebug>
 
-#include "personarrivalevent.h"
-#include "callelevatorevent.h"
-#include "../simulationmanager.h"
+#include "events/personarrivalevent.h"
+#include "events/callelevatorevent.h"
+
+#include "singleton/simulationmanager.h"
 
 void PersonArrivalEvent::resolve()
 {
     SimulationManager::getInstance()->addEvent(new PersonArrivalEvent(triggerTime + 1.0));
 
     std::default_random_engine rng(std::chrono::system_clock::now().time_since_epoch().count());
-    std::poisson_distribution<int> poissonRng(SimulationManager::getInstance()->getConfig().getMeanPoissonPersonArrival());
+    std::poisson_distribution<int> poissonRng(Configuration::getInstance()->getMeanPoissonPersonArrival());
     int amountNewPersons = poissonRng(rng);
     for (int i = 0; i < amountNewPersons; i++)
     {

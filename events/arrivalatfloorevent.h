@@ -1,8 +1,8 @@
 #ifndef ARRIVALATFLOOREVENT_H
 #define ARRIVALATFLOOREVENT_H
 
-#include "ievent.h"
-#include "data/elevator.h"
+#include "events/ievent.h"
+#include "data/elevator/ielevator.h"
 
 class ArrivalAtFloorEvent : public IEvent
 {

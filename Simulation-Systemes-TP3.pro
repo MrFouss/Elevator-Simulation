@@ -12,31 +12,31 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    simulationmanager.cpp \
+    singleton/simulationmanager.cpp \
     events/ievent.cpp \
     events/personarrivalevent.cpp \
     events/eventlist.cpp \
     data/person.cpp \
-    data/elevator.cpp \
+    data/elevator/ielevator.cpp \
     events/callelevatorevent.cpp \
     events/arrivalatfloorevent.cpp \
     data/elevatorrequest.cpp \
     data/elevatorlist.cpp \
-    data/configuration.cpp \
+    singleton/configuration.cpp \
     events/exportdataevent.cpp
 
 HEADERS += \
-    simulationmanager.h \
+    singleton/simulationmanager.h \
     events/ievent.h \
     events/eventlist.h \
     events/personarrivalevent.h \
     data/person.h \
-    data/elevator.h \
+    data/elevator/ielevator.h \
     events/callelevatorevent.h \
     events/arrivalatfloorevent.h \
     data/elevatorrequest.h \
     data/elevatorlist.h \
-    data/configuration.h \
+    singleton/configuration.h \
     data/enum.h \
     events/exportdataevent.h
 

@@ -3,7 +3,6 @@
 
 #include <list>
 
-#include "configuration.h"
 #include "data/elevatorlist.h"
 #include "data/person.h"
 #include "data/enum.h"
@@ -27,7 +26,7 @@ private:
     void invertDirection();
 
 public:
-    Elevator(ElevatorList* elevatorList, Configuration config);
+    Elevator(ElevatorList* elevatorList);
 
     int getId();
 

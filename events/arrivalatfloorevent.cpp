@@ -3,9 +3,10 @@
 #include <cmath>
 #include <QDebug>
 
-#include "arrivalatfloorevent.h"
-#include "simulationmanager.h"
-#include "callelevatorevent.h"
+#include "events/arrivalatfloorevent.h"
+#include "events/callelevatorevent.h"
+
+#include "singleton/simulationmanager.h"
 
 void ArrivalAtFloorEvent::resolve()
 {
@@ -28,7 +29,7 @@ void ArrivalAtFloorEvent::resolve()
 
             std::default_random_engine rng(std::chrono::system_clock::now().time_since_epoch().count());
             std::exponential_distribution<float> exponentialRng(
-                        1.0 / SimulationManager::getInstance()->getConfig().getMeanExponentialWorkTime());
+                        1.0 / Configuration::getInstance()->getMeanExponentialWorkTime());
 
             // get the work time in minutes
             float workTime = exponentialRng(rng);

@@ -1,7 +1,8 @@
 #include <random>
 
-#include "person.h"
-#include "../simulationmanager.h"
+#include "data/person.h"
+
+#include "singleton/simulationmanager.h"
 
 Person::Person()
 {
@@ -9,7 +10,7 @@ Person::Person()
 
     do
     {
-        targetFloor = rand() % SimulationManager::getInstance()->getConfig().getAmountFloors();
+        targetFloor = rand() % Configuration::getInstance()->getAmountFloors();
     }
     while (targetFloor == 1);
 }

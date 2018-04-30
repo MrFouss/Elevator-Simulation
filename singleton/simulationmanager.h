@@ -5,7 +5,6 @@
 
 #include "events/eventlist.h"
 #include "events/ievent.h"
-#include "data/configuration.h"
 #include "data/person.h"
 #include "data/elevatorlist.h"
 
@@ -14,10 +13,6 @@ class SimulationManager
 private:
     // SimulationManager instance
     static inline SimulationManager* instance = nullptr;
-    static inline int idCount = 0;
-
-    // configuration attribute
-    Configuration configuration;
 
     // attributes related to the event list
     EventList eventList;
@@ -34,8 +29,6 @@ private:
 public:
     static SimulationManager* getInstance();
     static void deleteInstance();
-
-    Configuration getConfig() const;
 
     float getAverageWaitTime();
 

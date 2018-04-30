@@ -4,9 +4,9 @@
 #include <vector>
 #include <list>
 
-#include "configuration.h"
+#include "singleton/configuration.h"
 #include "data/enum.h"
-#include "data/elevator.h"
+#include "data/elevator/ielevator.h"
 #include "data/elevatorrequest.h"
 
 class Elevator;
@@ -18,7 +18,7 @@ private:
     std::list<ElevatorRequest*> elevatorRequestList;
 
 public:
-    ElevatorList(Configuration config);
+    ElevatorList();
     ~ElevatorList();
 
     bool isElevatorIdle();

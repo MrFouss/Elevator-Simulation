@@ -4,19 +4,21 @@
 
 #include "configuration.h"
 
-void Configuration::setup(const char configFilePath[])
+Configuration::Configuration()
 {
-    QFile file(configFilePath);
+    QFile file("config.xml");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        qDebug().nospace().noquote() << "Failed to open file for reading.";
+        qFatal("Failed to open file for reading.");
+        return;
     }
 
     QDomDocument document;
     if(!document.setContent(&file))
     {
-        qDebug().nospace().noquote() << "Failed to parse the file into a DOM tree.";
+        qFatal("Failed to parse the file into a DOM tree.");
         file.close();
+        return;
     }
     file.close();
 
@@ -71,15 +73,31 @@ void Configuration::setup(const char configFilePath[])
     }
 }
 
+Configuration* Configuration::getInstance()
+{
+    if (instance == nullptr)
+    {
+        instance = new Configuration();
+    }
+
+    return instance;
+}
+
+void Configuration::deleteInstance()
+{
+    delete instance;
+    instance = nullptr;
+}
+
 void Configuration::printConfigurationSettings()
 {
-    qDebug().nospace().noquote() << "CONFIGURATION SETTINGS:";
-    qDebug().nospace().noquote() << " - endOfSimulationTime: " << endOfSimulationTime;
-    qDebug().nospace().noquote() << " - amountFloors: " << amountFloors;
-    qDebug().nospace().noquote() << " - amountElevators: " << amountElevators;
-    qDebug().nospace().noquote() << " - meanPoissonPersonArrival: " << meanPoissonPersonArrival;
+    qInfo().nospace().noquote() << "CONFIGURATION SETTINGS:";
+    qInfo().nospace().noquote() << " - endOfSimulationTime: " << endOfSimulationTime;
+    qInfo().nospace().noquote() << " - amountFloors: " << amountFloors;
+    qInfo().nospace().noquote() << " - amountElevators: " << amountElevators;
+    qInfo().nospace().noquote() << " - meanPoissonPersonArrival: " << meanPoissonPersonArrival;
 
-    QDebug busySchedulingDebug = qDebug().nospace().noquote() << " - busyScheduling: ";
+    QDebug busySchedulingDebug = qInfo().nospace().noquote() << " - busyScheduling: ";
     switch (busyScheduling)
     {
     case BusyScheduling::SHORTEST_SEEK_TIME_FIRST:
@@ -93,7 +111,7 @@ void Configuration::printConfigurationSettings()
         break;
     }
 
-    QDebug idleSchedulingDebug = qDebug().nospace().noquote() << " - idleScheduling: ";
+    QDebug idleSchedulingDebug = qInfo().nospace().noquote() << " - idleScheduling: ";
     switch (idleScheduling)
     {
     case IdleScheduling::TOP:

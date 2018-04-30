@@ -3,16 +3,16 @@
 #include <QDomDocument>
 #include <QDebug>
 
-#include "simulationmanager.h"
+#include "singleton/simulationmanager.h"
+#include "singleton/configuration.h"
 
 SimulationManager::SimulationManager()
 {
     qDebug().nospace().noquote() << "Initialization of the simulation manager...";
 
-    configuration.setup("config.xml");
-    configuration.printConfigurationSettings();
+    Configuration::getInstance()->printConfigurationSettings();
 
-    elevatorList = new ElevatorList(configuration);
+    elevatorList = new ElevatorList();
 
     qDebug().nospace().noquote() << "End of initialization of the simulation manager";
 }
@@ -34,14 +34,8 @@ SimulationManager* SimulationManager::getInstance()
 
 void SimulationManager::deleteInstance()
 {
-    idCount++;
     delete instance;
     instance = nullptr;
-}
-
-Configuration SimulationManager::getConfig() const
-{
-    return configuration;
 }
 
 float SimulationManager::getAverageWaitTime()
@@ -63,7 +57,7 @@ void SimulationManager::addEvent(IEvent* event)
 
 bool SimulationManager::isNextEventSolvable()
 {
-    return !eventList.isEmpty() && eventList.getNextEventTime() <= configuration.getEndOfSimulationTime();
+    return !eventList.isEmpty() && eventList.getNextEventTime() <= Configuration::getInstance()->getEndOfSimulationTime();
 }
 
 void SimulationManager::resolveNextEvent()

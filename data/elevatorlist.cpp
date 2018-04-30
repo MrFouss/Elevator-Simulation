@@ -2,14 +2,14 @@
 #include <limits>
 #include <QDebug>
 
-#include "elevatorlist.h"
-#include "simulationmanager.h"
+#include "data/elevatorlist.h"
+#include "singleton/simulationmanager.h"
 
-ElevatorList::ElevatorList(Configuration config)
+ElevatorList::ElevatorList()
 {
-    for (int i = 0; i < config.getAmountElevators(); ++i)
+    for (int i = 0; i < Configuration::getInstance()->getAmountElevators(); ++i)
     {
-        elevatorList.push_back(new Elevator(this, config));
+        elevatorList.push_back(new Elevator(this));
     }
 }
 
