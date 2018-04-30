@@ -1,24 +1,25 @@
-#include<random>
-#include<iostream>
-#include<map>
+#include <random>
+#include <chrono>
+#include <QDebug>
 
 #include "personarrivalevent.h"
+#include "callelevatorevent.h"
 #include "../simulationmanager.h"
 
 void PersonArrivalEvent::resolve()
 {
-    static std::default_random_engine rng;
+    SimulationManager::getInstance()->addEvent(new PersonArrivalEvent(triggerTime + 1.0));
 
-    SimulationManager::getInstance()->addEvent(new PersonArrivalEvent(triggerTime + 60.0));
-
-    std::poisson_distribution<int> poisson(SimulationManager::getInstance()->getMeanPoissonPersonArrival());
-    int amountNewPersons = poisson(rng);
+    std::default_random_engine rng(std::chrono::system_clock::now().time_since_epoch().count());
+    std::poisson_distribution<int> poissonRng(SimulationManager::getInstance()->getConfig().getMeanPoissonPersonArrival());
+    int amountNewPersons = poissonRng(rng);
     for (int i = 0; i < amountNewPersons; i++)
     {
         Person* newPerson = new Person();
         newPerson->startWaitingElevator(triggerTime);
-        SimulationManager::getInstance()->addPersonWaitingForElevator(1, newPerson);
-    }
+        SimulationManager::getInstance()->addEvent(new CallElevatorEvent(triggerTime, newPerson));
 
-    std::cout << "Amount of new persons at time " << triggerTime << ": " << amountNewPersons << std::endl;
+        qDebug().nospace().noquote() << "[" << QString().sprintf("%7.2f", triggerTime)
+                                     << "] New P" << QString().sprintf("%03d", newPerson->getId());
+    }
 }

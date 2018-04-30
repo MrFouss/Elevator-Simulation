@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += xml
+QT += core xml
 QT -= gui
 CONFIG += console c++11
 CONFIG -= app_bundle
@@ -17,7 +17,13 @@ SOURCES += \
     events/personarrivalevent.cpp \
     events/eventlist.cpp \
     data/person.cpp \
-    data/elevator.cpp
+    data/elevator.cpp \
+    events/callelevatorevent.cpp \
+    events/arrivalatfloorevent.cpp \
+    data/elevatorrequest.cpp \
+    data/elevatorlist.cpp \
+    data/configuration.cpp \
+    events/exportdataevent.cpp
 
 HEADERS += \
     simulationmanager.h \
@@ -25,7 +31,14 @@ HEADERS += \
     events/eventlist.h \
     events/personarrivalevent.h \
     data/person.h \
-    data/elevator.h
+    data/elevator.h \
+    events/callelevatorevent.h \
+    events/arrivalatfloorevent.h \
+    data/elevatorrequest.h \
+    data/elevatorlist.h \
+    data/configuration.h \
+    data/enum.h \
+    events/exportdataevent.h
 
 QMAKE_CXXFLAGS += -std=gnu++11
 

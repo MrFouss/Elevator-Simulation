@@ -7,11 +7,41 @@ Person::Person()
 {
     id = idCount++;
 
-    targetFloor = rand() % SimulationManager::getInstance()->getAmountFloors() - 1;
-    if (targetFloor > 0)
+    do
     {
-        targetFloor++;
+        targetFloor = rand() % SimulationManager::getInstance()->getConfig().getAmountFloors();
     }
+    while (targetFloor == 1);
+}
+
+int Person::getId()
+{
+    return id;
+}
+
+float Person::getTotalWaitTime()
+{
+    return totalWaitTime;
+}
+
+int Person::getCurrentFloor()
+{
+    return currentFloor;
+}
+
+void Person::setCurrentFloor(int floor)
+{
+    currentFloor = floor;
+}
+
+int Person::getTargetFloor()
+{
+    return targetFloor;
+}
+
+void Person::setTargetFloor(int floor)
+{
+    targetFloor = floor;
 }
 
 void Person::startWaitingElevator(float time)

@@ -1,13 +1,8 @@
 #include "eventlist.h"
 
-EventList::EventList()
-{
-
-}
-
 EventList::~EventList()
 {
-    empty();
+    clear();
 }
 
 void EventList::add(IEvent* newElement)
@@ -38,13 +33,13 @@ IEvent* EventList::pop()
     return element;
 }
 
-void EventList::empty()
+void EventList::clear()
 {
     std::vector<IEvent*>::iterator it;
 
     for (it = list.begin(); it < list.end(); ++it)
     {
-        delete *it;
+        // delete *it;
     }
 }
 

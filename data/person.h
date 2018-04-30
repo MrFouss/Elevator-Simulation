@@ -9,11 +9,23 @@ private:
 
     float waitStartTime = -1.0;
     float totalWaitTime = 0.0;
+
+    int currentFloor = 1;
     int targetFloor;
 
 public:
     Person();
     ~Person() {}
+
+    int getId();
+
+    float getTotalWaitTime();
+
+    int getCurrentFloor();
+    void setCurrentFloor(int floor);
+
+    int getTargetFloor();
+    void setTargetFloor(int floor);
 
     void startWaitingElevator(float time);
     void endWaitingElevator(float time);

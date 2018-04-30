@@ -10,13 +10,14 @@ class EventList
 private:
     std::vector<IEvent*> list;
 
+    void clear();
+
 public:
-    EventList();
+    EventList() {}
     ~EventList();
 
     void add(IEvent* newElement);
     IEvent* pop();
-    void empty();
     bool isEmpty() const;
     float getNextEventTime() const;
 };

@@ -1,31 +1,31 @@
 #ifndef SIMULATIONMANAGER_H
 #define SIMULATIONMANAGER_H
 
-#include<map>
 #include <vector>
 
 #include "events/eventlist.h"
 #include "events/ievent.h"
+#include "data/configuration.h"
 #include "data/person.h"
+#include "data/elevatorlist.h"
 
 class SimulationManager
 {
 private:
     // SimulationManager instance
     static inline SimulationManager* instance = nullptr;
+    static inline int idCount = 0;
 
-    // configuration attributes
-    static constexpr inline char CONFIG_FILE_PATH[] = ":/configuration/default";
-    int amountFloors = 7;
-    int amountElevators = 2;
-    float endOfSimulationTime = 43200.0;
-    float meanPoissonPersonArrival = 0.5;
+    // configuration attribute
+    Configuration configuration;
 
     // attributes related to the event list
     EventList eventList;
+    float currentTime = 0.0;
 
     // data attributes
-    std::vector<std::vector<Person*>> waitingForElevatorPeopleList;
+    std::vector<float> waitTimeList;
+    ElevatorList* elevatorList;
 
     // constructor and destructor
     SimulationManager();
@@ -35,18 +35,23 @@ public:
     static SimulationManager* getInstance();
     static void deleteInstance();
 
-    // configuration methods
-    void printConfigurationSettings();
-    int getAmountFloors();
-    int getAmountElevators();
-    float getMeanPoissonPersonArrival();
+    Configuration getConfig() const;
+
+    float getAverageWaitTime();
 
     // methods related to the event list
     void addEvent(IEvent* event);
     bool isNextEventSolvable();
     void resolveNextEvent();
 
-    void addPersonWaitingForElevator(int floor, Person* person);
+    float getCurrentTime();
+
+    bool isElevatorIdle();
+    Elevator* getIdleElevator();
+
+    void addElevatorRequest(ElevatorRequest* request);
+
+    void exitPerson(Person* person);
 };
 
 #endif // SIMULATIONMANAGER_H

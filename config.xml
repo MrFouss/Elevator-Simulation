@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <simulationSettings>
-    <data key="amountFloors">4</data>
+    <data key="endOfSimulationTime">100</data>
+
+    <data key="amountFloors">7</data>
     <data key="amountElevators">1</data>
-    <data key="endOfSimulationTime">1000</data>
-    <data key="meanPoissonPersonArrival">0.5</data>
+
+    <data key="meanPoissonPersonArrival">1</data>
     <data key="meanExponentialWorkTime">60.0</data>
+
+    <!-- <data key="busyScheduling">SHORTEST_SEEK_TIME_FIRST</data> -->
+    <data key="busyScheduling">LINEAR_SCAN</data>
+
+    <!-- <data key="idleScheduling">TOP</data> -->
+    <data key="idleScheduling">BOTTOM</data>
 </simulationSettings>

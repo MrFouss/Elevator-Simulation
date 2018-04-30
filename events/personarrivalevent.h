@@ -3,7 +3,7 @@
 
 #include "ievent.h"
 
-class PersonArrivalEvent : public IEvent
+class   PersonArrivalEvent : public IEvent
 {
 public:
     PersonArrivalEvent(float triggerTime) : IEvent(triggerTime) {}

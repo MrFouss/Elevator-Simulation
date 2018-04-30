@@ -1,66 +1,25 @@
-#include <iostream>
-#include <QFile>
+#include <cmath>
 #include <QXmlStreamReader>
 #include <QDomDocument>
+#include <QDebug>
 
 #include "simulationmanager.h"
+
 SimulationManager::SimulationManager()
 {
-    qDebug("Initialization of the simulation manager...");
+    qDebug().nospace().noquote() << "Initialization of the simulation manager...";
 
-    QFile file(CONFIG_FILE_PATH);
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qDebug("Failed to open file for reading.");
-    }
+    configuration.setup(":/configuration/default");
+    configuration.printConfigurationSettings();
 
-    QDomDocument document;
-    if(!document.setContent(&file))
-    {
-        qDebug("Failed to parse the file into a DOM tree.");
-        file.close();
-    }
-    file.close();
+    elevatorList = new ElevatorList(configuration);
 
-    QDomNodeList dataElements = document.documentElement().elementsByTagName("data");
-
-    for (int i = 0; i < dataElements.count(); ++i)
-    {
-        QDomElement element = dataElements.item(i).toElement();
-
-        if (element.attribute("key") == "amountFloors")
-        {
-            amountFloors = element.text().toInt();
-        }
-        else if (element.attribute("key") == "amountElevators")
-        {
-            amountElevators = element.text().toInt();
-        }
-        else if (element.attribute("key") == "endOfSimulationTime")
-        {
-            endOfSimulationTime = element.text().toFloat();
-        }
-        else if (element.attribute("key") == "meanPoissonPersonArrival")
-        {
-            meanPoissonPersonArrival = element.text().toFloat();
-        }
-    }
-
-    waitingForElevatorPeopleList = std::vector<std::vector<Person*>>(amountFloors);
-
-    std::cout << "End of initialization of the simulation manager" << std::endl << std::endl;
+    qDebug().nospace().noquote() << "End of initialization of the simulation manager";
 }
 
 SimulationManager::~SimulationManager()
 {
-    eventList.empty();
-
-    for (int i = 0; i < amountFloors; ++i) {
-        for (Person* person : waitingForElevatorPeopleList[i])
-        {
-            delete person;
-        }
-    }
+    delete elevatorList;
 }
 
 SimulationManager* SimulationManager::getInstance()
@@ -75,32 +34,26 @@ SimulationManager* SimulationManager::getInstance()
 
 void SimulationManager::deleteInstance()
 {
+    idCount++;
     delete instance;
     instance = nullptr;
 }
 
-void SimulationManager::printConfigurationSettings()
+Configuration SimulationManager::getConfig() const
 {
-    std::cout << "CONFIGURATION SETTINGS:" << std::endl;
-    std::cout << " - amountFloors: " << amountFloors << std::endl;
-    std::cout << " - amountElevators: " << amountElevators << std::endl;
-    std::cout << " - endOfSimulationTime: " << endOfSimulationTime << std::endl;
-    std::cout << " - meanPoissonPersonArrival: " << meanPoissonPersonArrival << std::endl;
+    return configuration;
 }
 
-int SimulationManager::getAmountFloors()
+float SimulationManager::getAverageWaitTime()
 {
-    return amountFloors;
-}
+    float average = 0.0;
 
-int SimulationManager::getAmountElevators()
-{
-    return amountElevators;
-}
+    for (float value : waitTimeList)
+    {
+        average += (value / waitTimeList.size());
+    }
 
-float SimulationManager::getMeanPoissonPersonArrival()
-{
-    return meanPoissonPersonArrival;
+    return average;
 }
 
 void SimulationManager::addEvent(IEvent* event)
@@ -110,17 +63,43 @@ void SimulationManager::addEvent(IEvent* event)
 
 bool SimulationManager::isNextEventSolvable()
 {
-    return !eventList.isEmpty() && eventList.getNextEventTime() <= endOfSimulationTime;
+    return !eventList.isEmpty() && eventList.getNextEventTime() <= configuration.getEndOfSimulationTime();
 }
 
 void SimulationManager::resolveNextEvent()
 {
     IEvent* event = eventList.pop();
+    currentTime = event->getTriggerTime();
     event->resolve();
     delete event;
 }
 
-void SimulationManager::addPersonWaitingForElevator(int floor, Person* person)
+float SimulationManager::getCurrentTime()
 {
-    waitingForElevatorPeopleList[floor].push_back(person);
+    return currentTime;
+}
+
+bool SimulationManager::isElevatorIdle()
+{
+    return elevatorList->isElevatorIdle();
+}
+
+Elevator* SimulationManager::getIdleElevator()
+{
+    return elevatorList->getIdleElevator();
+}
+
+void SimulationManager::addElevatorRequest(ElevatorRequest *request)
+{
+    elevatorList->addRequest(request);
+}
+
+void SimulationManager::exitPerson(Person* person)
+{
+    if (currentTime >= 100.0)
+    {
+        waitTimeList.push_back(person->getTotalWaitTime());
+    }
+
+    delete person;
 }
