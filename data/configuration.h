@@ -21,7 +21,7 @@ private:
 
 public:
     Configuration() {}
-    void setup(const char configFilePath[] = ":/configuration/default");
+    void setup(const char configFilePath[] = "config.xml");
 
     void printConfigurationSettings();
 

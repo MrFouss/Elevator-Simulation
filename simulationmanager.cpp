@@ -9,7 +9,7 @@ SimulationManager::SimulationManager()
 {
     qDebug().nospace().noquote() << "Initialization of the simulation manager...";
 
-    configuration.setup(":/configuration/default");
+    configuration.setup("config.xml");
     configuration.printConfigurationSettings();
 
     elevatorList = new ElevatorList(configuration);
@@ -96,7 +96,7 @@ void SimulationManager::addElevatorRequest(ElevatorRequest *request)
 
 void SimulationManager::exitPerson(Person* person)
 {
-    if (currentTime >= 80.0)
+    if (currentTime >= 0.0)
     {
         waitTimeList.push_back(person->getTotalWaitTime());
     }

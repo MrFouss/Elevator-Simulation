@@ -23,7 +23,7 @@ int main()
 
     // initiate a first event to start the simulation
     simulationManager->addEvent(new PersonArrivalEvent(0.0));
-    simulationManager->addEvent(new ExportDataEvent(100.0));
+    simulationManager->addEvent(new ExportDataEvent(0.0));
 
     while (simulationManager->isNextEventSolvable())
     {
