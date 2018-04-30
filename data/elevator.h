@@ -24,6 +24,7 @@ private:
     std::list<Person*> passengerList;
 
     int getNearestPassengerFloor();
+    void invertDirection();
 
 public:
     Elevator(ElevatorList* elevatorList, Configuration config);

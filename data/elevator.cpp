@@ -45,6 +45,18 @@ int Elevator::getNearestPassengerFloor()
     return nearestFloor;
 }
 
+void Elevator::invertDirection()
+{
+    if (direction == Direction::UP)
+    {
+        direction = Direction::DOWN;
+    }
+    else if (direction == Direction::DOWN)
+    {
+        direction = Direction::UP;
+    }
+}
+
 int Elevator::getCurrentFloor()
 {
     return currentFloor;
@@ -134,21 +146,22 @@ int Elevator::chooseFloor()
                 return elevatorList->getNearestFloorWithRequest(currentFloor);
 
             case BusyScheduling::LINEAR_SCAN:
-                if (elevatorList->areRequestAvailableInDirection(currentFloor, direction))
+                if (elevatorList->areRequestAvailableInDirection(currentFloor, direction, false))
                 {
-                    return elevatorList->getNearestFloorWithRequest(currentFloor, direction);
+                    if (elevatorList->areRequestAvailableInDirection(currentFloor, direction, true))
+                    {
+                        return elevatorList->getNearestFloorWithRequest(currentFloor, direction, true);
+                    }
+                    else
+                    {
+                        int targetFloor = elevatorList->getNearestFloorWithRequest(currentFloor, direction, false);
+                        invertDirection();
+                        return targetFloor;
+                    }
                 }
                 else
                 {
-                    if (direction == Direction::UP)
-                    {
-                        direction = Direction::DOWN;
-                    }
-                    else if (direction == Direction::DOWN)
-                    {
-                        direction = Direction::UP;
-                    }
-
+                    invertDirection();
                     embark();
                     return chooseFloor();
                 }

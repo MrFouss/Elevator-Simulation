@@ -30,8 +30,8 @@ public:
     std::list<ElevatorRequest*> getRequestListAtFloor(int floor, Direction direction);
 
     int getNearestFloorWithRequest(int floor);
-    int getNearestFloorWithRequest(int floor, Direction direction);
-    bool areRequestAvailableInDirection(int floor, Direction direction);
+    int getNearestFloorWithRequest(int floor, Direction direction, bool isRequestSameDirection);
+    bool areRequestAvailableInDirection(int floor, Direction direction, bool isRequestSameDirection);
 };
 
 #endif // ELEVATORLIST_H

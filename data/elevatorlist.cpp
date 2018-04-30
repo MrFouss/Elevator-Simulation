@@ -1,5 +1,6 @@
 #include <cmath>
 #include <limits>
+#include <QDebug>
 
 #include "elevatorlist.h"
 #include "simulationmanager.h"
@@ -123,9 +124,9 @@ int ElevatorList::getNearestFloorWithRequest(int floor)
     return nearestFloor;
 }
 
-int ElevatorList::getNearestFloorWithRequest(int floor, Direction direction)
+int ElevatorList::getNearestFloorWithRequest(int floor, Direction direction, bool isRequestSameDirection)
 {
-    if (!areRequestAvailableInDirection(floor, direction))
+    if (!areRequestAvailableInDirection(floor, direction, isRequestSameDirection))
     {
         return -1;
     }
@@ -138,21 +139,29 @@ int ElevatorList::getNearestFloorWithRequest(int floor, Direction direction)
                 && ((direction == Direction::UP && request->getStartFloor() >= floor)
                     || (direction == Direction::DOWN && request->getStartFloor() <= floor)))
         {
-            nearestFloor = request->getStartFloor();
+            if (!isRequestSameDirection || direction == request->getDirection())
+            {
+                nearestFloor = request->getStartFloor();
+            }
         }
     }
 
     return nearestFloor;
 }
 
-bool ElevatorList::areRequestAvailableInDirection(int floor, Direction direction)
+bool ElevatorList::areRequestAvailableInDirection(int floor, Direction direction, bool isRequestSameDirection)
 {
     for (ElevatorRequest* request : elevatorRequestList)
     {
-        if ((direction == Direction::UP && request->getStartFloor() >= floor)
-                || (direction == Direction::DOWN && request->getStartFloor() <= floor))
+        if ((direction == Direction::UP
+             && request->getStartFloor() >= floor)
+                || (direction == Direction::DOWN
+                    && request->getStartFloor() <= floor))
         {
-            return true;
+            if (!isRequestSameDirection || direction == request->getDirection())
+            {
+                return true;
+            }
         }
     }
 

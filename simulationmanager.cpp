@@ -96,7 +96,7 @@ void SimulationManager::addElevatorRequest(ElevatorRequest *request)
 
 void SimulationManager::exitPerson(Person* person)
 {
-    if (currentTime >= 100.0)
+    if (currentTime >= 80.0)
     {
         waitTimeList.push_back(person->getTotalWaitTime());
     }

@@ -1,6 +1,7 @@
 #ifndef ELEVATORREQUEST_H
 #define ELEVATORREQUEST_H
 
+#include "enum.h"
 #include "data/person.h"
 
 class ElevatorRequest
@@ -17,6 +18,7 @@ public:
     int getStartFloor();
     int getEndFloor();
     Person* getPerson();
+    Direction getDirection();
 };
 
 #endif // ELEVATORREQUEST_H

@@ -14,3 +14,15 @@ Person* ElevatorRequest::getPerson()
 {
     return person;
 }
+
+Direction ElevatorRequest::getDirection()
+{
+    if (endFloor > startFloor)
+    {
+        return Direction::UP;
+    }
+    else
+    {
+        return Direction::DOWN;
+    }
+}
