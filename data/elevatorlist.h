@@ -6,15 +6,15 @@
 
 #include "singleton/configuration.h"
 #include "data/enum.h"
-#include "data/elevator/ielevator.h"
+#include "data/elevator/abstractelevator.h"
 #include "data/elevatorrequest.h"
 
-class Elevator;
+class AbstractElevator;
 
 class ElevatorList
 {
 private:
-    std::vector<Elevator*> elevatorList;
+    std::vector<AbstractElevator*> elevatorList;
     std::list<ElevatorRequest*> elevatorRequestList;
 
 public:
@@ -22,7 +22,7 @@ public:
     ~ElevatorList();
 
     bool isElevatorIdle();
-    Elevator* getIdleElevator();
+    AbstractElevator* getIdleElevator();
 
     void addRequest(ElevatorRequest* request);
     bool isRequestAvailable();

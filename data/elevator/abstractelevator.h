@@ -1,32 +1,36 @@
-#ifndef ELEVATOR_H
-#define ELEVATOR_H
+#ifndef ABSTRACTELEVATOR_H
+#define ABSTRACTELEVATOR_H
 
 #include <list>
 
 #include "data/elevatorlist.h"
-#include "data/person.h"
+#include "data/elevatorrequest.h"
 #include "data/enum.h"
+#include "data/person.h"
 
 class ElevatorList;
 
-class Elevator
+class AbstractElevator
 {
-private:
+protected:
     static inline int idCount = 0;
     int id;
 
+    // parent elevator list
     ElevatorList* elevatorList;
 
-    int currentFloor;
+    int floor;
+    int idleFloor;
     bool idle = true;
-    Direction direction = Direction::UP;
+
     std::list<Person*> passengerList;
 
     int getNearestPassengerFloor();
-    void invertDirection();
+
+    void printEmbarkInfo(ElevatorRequest* request);
 
 public:
-    Elevator(ElevatorList* elevatorList);
+    AbstractElevator(ElevatorList* elevatorList);
 
     int getId();
 
@@ -36,11 +40,9 @@ public:
     bool isIdle();
     void setIdle(bool idle);
 
-    bool isFloorInRightDirection(int floor);
-
     std::list<Person*> disembark();
-    void embark();
-    int chooseFloor();
+    virtual void embark() = 0;
+    virtual int chooseFloor() = 0;
 };
 
-#endif // ELEVATOR_H
+#endif // ABSTRACTELEVATOR_H

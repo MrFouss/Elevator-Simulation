@@ -6,7 +6,8 @@
 
 Configuration::Configuration()
 {
-    QFile file("config.xml");
+    // QFile file("config.xml");
+    QFile file(":/configuration/default");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qFatal("Failed to open file for reading.");

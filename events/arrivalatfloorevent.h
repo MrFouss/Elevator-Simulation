@@ -2,15 +2,15 @@
 #define ARRIVALATFLOOREVENT_H
 
 #include "events/ievent.h"
-#include "data/elevator/ielevator.h"
+#include "data/elevator/abstractelevator.h"
 
 class ArrivalAtFloorEvent : public IEvent
 {
 private:
-    Elevator* elevator;
+    AbstractElevator* elevator;
 
 public:
-    ArrivalAtFloorEvent(float triggerTime, Elevator* elevator) : IEvent(triggerTime), elevator(elevator) {}
+    ArrivalAtFloorEvent(float triggerTime, AbstractElevator* elevator) : IEvent(triggerTime), elevator(elevator) {}
 
     virtual void resolve();
 };

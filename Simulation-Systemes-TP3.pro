@@ -17,13 +17,15 @@ SOURCES += \
     events/personarrivalevent.cpp \
     events/eventlist.cpp \
     data/person.cpp \
-    data/elevator/ielevator.cpp \
     events/callelevatorevent.cpp \
     events/arrivalatfloorevent.cpp \
     data/elevatorrequest.cpp \
     data/elevatorlist.cpp \
     singleton/configuration.cpp \
-    events/exportdataevent.cpp
+    events/exportdataevent.cpp \
+    data/elevator/sstfelevator.cpp \
+    data/elevator/linearscanelevator.cpp \
+    data/elevator/abstractelevator.cpp
 
 HEADERS += \
     singleton/simulationmanager.h \
@@ -31,14 +33,16 @@ HEADERS += \
     events/eventlist.h \
     events/personarrivalevent.h \
     data/person.h \
-    data/elevator/ielevator.h \
     events/callelevatorevent.h \
     events/arrivalatfloorevent.h \
     data/elevatorrequest.h \
     data/elevatorlist.h \
     singleton/configuration.h \
     data/enum.h \
-    events/exportdataevent.h
+    events/exportdataevent.h \
+    data/elevator/sstfelevator.h \
+    data/elevator/linearscanelevator.h \
+    data/elevator/abstractelevator.h
 
 QMAKE_CXXFLAGS += -std=gnu++11
 

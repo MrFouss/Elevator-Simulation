@@ -40,7 +40,7 @@ public:
     float getCurrentTime();
 
     bool isElevatorIdle();
-    Elevator* getIdleElevator();
+    AbstractElevator* getIdleElevator();
 
     void addElevatorRequest(ElevatorRequest* request);
 

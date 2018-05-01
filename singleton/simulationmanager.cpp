@@ -78,7 +78,7 @@ bool SimulationManager::isElevatorIdle()
     return elevatorList->isElevatorIdle();
 }
 
-Elevator* SimulationManager::getIdleElevator()
+AbstractElevator* SimulationManager::getIdleElevator()
 {
     return elevatorList->getIdleElevator();
 }

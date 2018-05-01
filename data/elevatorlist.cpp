@@ -1,21 +1,43 @@
+#include "elevatorlist.h"
+
 #include <cmath>
 #include <limits>
 #include <QDebug>
 
-#include "data/elevatorlist.h"
+#include "data/elevator/sstfelevator.h"
+#include "data/elevator/linearscanelevator.h"
+
 #include "singleton/simulationmanager.h"
 
 ElevatorList::ElevatorList()
 {
-    for (int i = 0; i < Configuration::getInstance()->getAmountElevators(); ++i)
+    Configuration* config = Configuration::getInstance();
+    for (int i = 0; i < config->getAmountElevators(); ++i)
     {
-        elevatorList.push_back(new Elevator(this));
+        AbstractElevator* newElevator;
+
+        switch (config->getBusyScheduling())
+        {
+        case BusyScheduling::SHORTEST_SEEK_TIME_FIRST:
+            newElevator = new SstfElevator(this);
+            break;
+
+        case BusyScheduling::LINEAR_SCAN:
+            newElevator = new LinearScanElevator(this);
+            break;
+
+        default:
+            qFatal("Unknown busy scheduling!");
+            break;
+        }
+
+        elevatorList.push_back(newElevator);
     }
 }
 
 ElevatorList::~ElevatorList()
 {
-    for (Elevator* elevator : elevatorList)
+    for (AbstractElevator* elevator : elevatorList)
     {
         delete elevator;
     }
@@ -28,7 +50,7 @@ ElevatorList::~ElevatorList()
 
 bool ElevatorList::isElevatorIdle()
 {
-    for (Elevator* elevator : elevatorList)
+    for (AbstractElevator* elevator : elevatorList)
     {
         if (elevator->isIdle())
         {
@@ -39,9 +61,9 @@ bool ElevatorList::isElevatorIdle()
     return false;
 }
 
-Elevator* ElevatorList::getIdleElevator()
+AbstractElevator* ElevatorList::getIdleElevator()
 {
-    for (Elevator* elevator : elevatorList)
+    for (AbstractElevator* elevator : elevatorList)
     {
         if (elevator->isIdle())
         {

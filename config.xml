@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <simulationSettings>
-    <data key="endOfSimulationTime">1440</data>
+    <data key="endOfSimulationTime">100</data>
 
     <data key="amountFloors">7</data>
     <data key="amountElevators">1</data>

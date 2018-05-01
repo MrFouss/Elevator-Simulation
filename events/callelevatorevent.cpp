@@ -17,7 +17,7 @@ void CallElevatorEvent::resolve()
 
     if (simulationManager->isElevatorIdle())
     {
-        Elevator* idleElevator = simulationManager->getIdleElevator();
+        AbstractElevator* idleElevator = simulationManager->getIdleElevator();
         simulationManager->addEvent(new ArrivalAtFloorEvent(triggerTime, idleElevator));
         qDebug().nospace().noquote() << "[" << QString().sprintf("%7.2f", triggerTime)
                                      << "] E" << idleElevator->getId()
